@@ -14,17 +14,28 @@ def get_user_page(request):
 
 
 def product_list(request):
+    # получаем номер страницы, на которую переходит пользователь
+    page_number = request.GET.get('page')
+
+    # получаем количество выводимых записей
+    count = request.GET.get('count')
+    if not count:
+        count = '3'
+
     # получаем все посты
     products = Product.objects.all()
 
     # создаем пагинатор
-    paginator = Paginator(products, 3)  # 3 поста на странице
-
-    # получаем номер страницы, на которую переходит пользователь
-    page_number = request.GET.get('page')
+    paginator = Paginator(products, int(count))  # 3 поста на странице
 
     # получаем посты для текущей страницы
     page_products = paginator.get_page(page_number)
 
     # передаем контекст в шаблон
-    return render(request, 'product_list.html', {'page_products': page_products, 'paginator': paginator})
+    context = {
+        'page_products': page_products,
+        'paginator': paginator,
+        'count': count
+    }
+
+    return render(request, 'product_list.html', context)

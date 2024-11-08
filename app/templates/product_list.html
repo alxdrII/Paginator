@@ -19,18 +19,23 @@
     </ul>
     <!-- показываем пагинатор -->
     <div class="pagination">
-        <p>Страницы:</p>
-        <ul>
+        <hr size="2">
+        <h3>
             {% if page_products.has_previous %}
-                <li><a href="?page=1"><<</a></li>
-                <li><a href="?page={{ page_products.previous_page_number }}">Previous</a></li>
+            <a href="?page=1&count={{ count }}"><<<</a>
+            <a href="?page={{ page_products.previous_page_number }}&count={{ count }}">&nbsp; Prev &nbsp;</a>
             {% endif %}
-            <li>{{ page_products.number }}/{{ paginator.num_pages }}</li>
+            {{ page_products.number }}&nbsp; из &nbsp;{{ paginator.num_pages }}
             {% if page_products.has_next %}
-                <li><a href="?page={{ page_products.next_page_number }}">Next</a></li>
-                <li><a href="?page={{ paginator.num_pages }}">>>></a></li>
+                <a href="?page={{ page_products.next_page_number }}&count={{ count }}">&nbsp; Next &nbsp;</a>
+                <a href="?page={{ paginator.num_pages }}&count={{ count }}" >>>></a>
             {% endif %}
-        </ul>
+        </h3>
+        <form name="pages_form" method="get" action="">
+            <input type="number" id="count" name="count" size="3" value="{{count}}" >
+            <input type="hidden" name="page" value="1">
+            <input type="submit" value="Отправить">
+        </form>
     </div>
 {% endblock %}
 </body>
